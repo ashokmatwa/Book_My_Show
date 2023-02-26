@@ -23,8 +23,8 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
     private int age;
-    @NonNull
-    @Column(unique = true)
+//    @NonNull --> for methods
+    @Column(unique = true, nullable = false)
     private String mobileNo;
     private String address;
 

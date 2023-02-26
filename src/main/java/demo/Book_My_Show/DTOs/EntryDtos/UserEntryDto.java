@@ -1,4 +1,4 @@
-package demo.Book_My_Show.EntryDtos;
+package demo.Book_My_Show.DTOs.EntryDtos;
 
 import lombok.Data;
 

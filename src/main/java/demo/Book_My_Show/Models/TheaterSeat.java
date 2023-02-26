@@ -11,12 +11,13 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class TheaterSeat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int seatNo;
+    private String seatNo;
     @Enumerated(value = EnumType.STRING)
     private SeatType seatType;
 
