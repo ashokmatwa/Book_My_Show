@@ -18,6 +18,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +30,7 @@ public class Ticket {
     private LocalDate showDate;
     private String ticketId = UUID.randomUUID().toString();
     private String theaterName;
+    private String bookedSeats;
 //    private List<Integer> bookedSeats;
 
     //user --> tickets
