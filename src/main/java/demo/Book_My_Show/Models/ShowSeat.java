@@ -20,7 +20,7 @@ public class ShowSeat {
     private int id;
     private boolean isBooked;
     private int price; //price of CLASSIC Seat for that particular show
-    private int seatNo;
+    private String seatNo;
     @CreatedDate
     private Date bookedAt;
     @Enumerated(value = EnumType.STRING)

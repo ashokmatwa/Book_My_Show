@@ -22,11 +22,17 @@ public class TheaterService {
     TheaterSeatRepository theaterSeatRepository; // seat
 
     public String addTheater(TheaterEntryDto theaterEntryDto) throws Exception{
+
+        //Do some validation
+        //if name is null or location is null or name already exists
+
         Theater theater = TheaterConverter.convertEntryDtoToEntity(theaterEntryDto);
 
-        List<TheaterSeat> theaterSeatList = createTheaterSeats(theaterEntryDto, theater);
+        //passing theater also to set theaterSeat attribute(theater)
+        List<TheaterSeat> theaterSeatList = createTheaterSeats(theaterEntryDto, theater); //calling function
 
-        theaterRepository.save(theater);
+        theater.setTheaterSeatList(theaterSeatList);
+        theaterRepository.save(theater); // cascade --> theaterSeat repo
         return "theater added successfully";
     }
     //passing theater also to set theaterSeat attribute(theater)
@@ -52,7 +58,7 @@ public class TheaterService {
             theaterSeatList.add(theaterSeat);
         }
 
-        theaterSeatRepository.saveAll(theaterSeatList);
+//        theaterSeatRepository.saveAll(theaterSeatList);
         return theaterSeatList;
     }
 }

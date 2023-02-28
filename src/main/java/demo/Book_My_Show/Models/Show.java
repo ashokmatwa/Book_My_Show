@@ -20,6 +20,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Show {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
