@@ -10,7 +10,9 @@ import demo.Book_My_Show.Repositories.TheaterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -42,10 +44,10 @@ public class ShowService {
         show.setTheater(theater);
         show.setMovie(movie);
 
+        //        showRepository.save(show);
         theaterRepository.save(theater);
         movieRepository.save(movie);
 
-//        showRepository.save(show);
         return "show added successfully";
     }
     private List<ShowSeat> createShowSeats(ShowEntryDto showEntryDto, Show show){
@@ -69,10 +71,21 @@ public class ShowService {
 
             showSeat.setBooked(false);
             showSeat.setShow(show);//foreign attribute
-
+//            showSeat.setBookedAt(new Date());
             showSeatList.add(showSeat); //adding to the list
         }
 
         return showSeatList;
+    }
+
+    public List<LocalTime> getShowTime(int theaterId, int movieId){
+        List<Show> showList = theaterRepository.findById(theaterId).get().getShowList();
+        List<LocalTime> showTimeList = new ArrayList<>();
+
+        for (Show show : showList){
+            int id = show.getMovie().getMovieId();
+            if(id == movieId) showTimeList.add(show.getShowTime());
+        }
+        return showTimeList;
     }
 }

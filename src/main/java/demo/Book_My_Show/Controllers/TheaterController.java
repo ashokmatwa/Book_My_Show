@@ -1,15 +1,15 @@
 package demo.Book_My_Show.Controllers;
 
 import demo.Book_My_Show.DTOs.EntryDtos.TheaterEntryDto;
+import demo.Book_My_Show.Models.Theater;
 import demo.Book_My_Show.Models.TheaterSeat;
 import demo.Book_My_Show.Services.TheaterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/theater")
@@ -27,5 +27,16 @@ public class TheaterController {
             String response = "theater not added";
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/getTheater")
+    public ResponseEntity<List<Theater>> getTheaters(@RequestParam int movieId){
+        List<Theater> theaterList = theaterService.getTheaters(movieId);
+        return new ResponseEntity<>(theaterList, HttpStatus.FOUND);
+    }
+    @GetMapping("/uniqueLocation")
+    public ResponseEntity<List<String>> getUniqueLocation(){
+        List<String> locationList = theaterService.getUniqueLocation();
+        return new ResponseEntity<>(locationList, HttpStatus.FOUND);
     }
 }

@@ -3,8 +3,11 @@ package demo.Book_My_Show.Services;
 import demo.Book_My_Show.Converters.TheaterConverter;
 import demo.Book_My_Show.DTOs.EntryDtos.TheaterEntryDto;
 import demo.Book_My_Show.Enums.SeatType;
+import demo.Book_My_Show.Models.Movie;
+import demo.Book_My_Show.Models.Show;
 import demo.Book_My_Show.Models.Theater;
 import demo.Book_My_Show.Models.TheaterSeat;
+import demo.Book_My_Show.Repositories.MovieRepository;
 import demo.Book_My_Show.Repositories.TheaterRepository;
 import demo.Book_My_Show.Repositories.TheaterSeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,8 @@ public class TheaterService {
     TheaterRepository theaterRepository;
     @Autowired
     TheaterSeatRepository theaterSeatRepository; // seat
+    @Autowired
+    MovieRepository movieRepository;
 
     public String addTheater(TheaterEntryDto theaterEntryDto) throws Exception{
 
@@ -60,5 +65,21 @@ public class TheaterService {
 
 //        theaterSeatRepository.saveAll(theaterSeatList);
         return theaterSeatList;
+    }
+
+    public List<Theater> getTheaters(int movieId){
+        Movie movie = movieRepository.findById(movieId).get();
+        List<Show> showList = movie.getShowList();
+
+        List<Theater> theaterList = new ArrayList<>();
+        for (Show show : showList){
+            Theater theater = show.getTheater();
+            theaterList.add(theater);
+        }
+        return theaterList;
+    }
+    public List<String> getUniqueLocation(){
+        List<String> locationList = theaterRepository.getLocation();
+        return locationList;
     }
 }

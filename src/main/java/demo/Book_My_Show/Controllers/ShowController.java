@@ -5,10 +5,10 @@ import demo.Book_My_Show.Services.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/shows")
@@ -26,5 +26,11 @@ public class ShowController {
             String response = "show not added";
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/getShowTime")
+    public ResponseEntity<List<LocalTime>> getShowTime(@RequestParam int theaterId, @RequestParam int movieId){
+        List<LocalTime> localTime = showService.getShowTime(theaterId, movieId);
+        return new ResponseEntity<>(localTime, HttpStatus.FOUND);
     }
 }
