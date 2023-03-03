@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -30,13 +31,21 @@ public class TheaterController {
     }
 
     @GetMapping("/getTheater")
-    public ResponseEntity<List<Theater>> getTheaters(@RequestParam int movieId){
-        List<Theater> theaterList = theaterService.getTheaters(movieId);
-        return new ResponseEntity<>(theaterList, HttpStatus.FOUND);
+    public ResponseEntity<List<String>> getTheaters(@RequestParam int movieId){
+//        List<Theater> theaterList = theaterService.getTheaters(movieId);
+//        return new ResponseEntity<>(theaterList, HttpStatus.FOUND);
+        List<String> theaterNameList = theaterService.getTheaters(movieId);
+        return new ResponseEntity<>(theaterNameList, HttpStatus.FOUND);
     }
     @GetMapping("/uniqueLocation")
     public ResponseEntity<List<String>> getUniqueLocation(){
         List<String> locationList = theaterService.getUniqueLocation();
         return new ResponseEntity<>(locationList, HttpStatus.FOUND);
+    }
+
+    @GetMapping("/time")
+    public ResponseEntity<List<String>> getTheaters(@RequestParam LocalTime time){
+        List<String> theaterList = theaterService.getTheaterForTime(time);
+        return new ResponseEntity<>(theaterList, HttpStatus.FOUND);
     }
 }

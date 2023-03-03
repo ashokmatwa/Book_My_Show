@@ -31,6 +31,8 @@ public class ShowService {
         List<ShowSeat> showSeatList = createShowSeats(showEntryDto, show);
         show.setShowSeatList(showSeatList);
 
+        show = showRepository.save(show); // to stop from adding two times
+
         //for bidirectional
         int theaterId = showEntryDto.getTheaterId();
         Theater theater = theaterRepository.findById(theaterId).get();

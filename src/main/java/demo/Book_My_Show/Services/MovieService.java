@@ -4,6 +4,7 @@ import demo.Book_My_Show.Converters.MovieConverter;
 import demo.Book_My_Show.DTOs.EntryDtos.MovieEntryDto;
 import demo.Book_My_Show.Models.Movie;
 import demo.Book_My_Show.Models.Show;
+import demo.Book_My_Show.Models.Ticket;
 import demo.Book_My_Show.Repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,17 +26,31 @@ public class MovieService {
         return "movie added successfully";
     }
 
-    public Movie maximumNoShow(){
+    public String maximumNoShow(){
         List<Movie> movieList = movieRepository.findAll();
         int count = 0;
-        Movie movie1 = null;
+        String movieName = "";
         for(Movie movie : movieList){
             List<Show> showList = movie.getShowList();
             if(showList.size() > count){
                 count = showList.size();
-                movie1 = movie;
+                movieName = movie.getMovieName();
             }
         }
-        return movie1;
+        return movieName;
+    }
+
+    public Integer totalCollection(int movieId){
+        int amount = 0;
+        Movie movie = movieRepository.findById(movieId).get();
+
+        List<Show> showList = movie.getShowList();
+        for (Show show : showList){
+            List<Ticket> ticketList = show.getTicketList();
+            for(Ticket ticket : ticketList){
+                amount = amount + ticket.getTotalAmount();
+            }
+        }
+        return amount;
     }
 }

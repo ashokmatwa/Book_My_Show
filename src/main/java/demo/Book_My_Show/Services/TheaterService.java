@@ -8,11 +8,14 @@ import demo.Book_My_Show.Models.Show;
 import demo.Book_My_Show.Models.Theater;
 import demo.Book_My_Show.Models.TheaterSeat;
 import demo.Book_My_Show.Repositories.MovieRepository;
+import demo.Book_My_Show.Repositories.ShowRepository;
 import demo.Book_My_Show.Repositories.TheaterRepository;
 import demo.Book_My_Show.Repositories.TheaterSeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,8 @@ public class TheaterService {
     TheaterSeatRepository theaterSeatRepository; // seat
     @Autowired
     MovieRepository movieRepository;
+    @Autowired
+    ShowRepository showRepository;
 
     public String addTheater(TheaterEntryDto theaterEntryDto) throws Exception{
 
@@ -67,19 +72,31 @@ public class TheaterService {
         return theaterSeatList;
     }
 
-    public List<Theater> getTheaters(int movieId){
+    public List<String> getTheaters(int movieId){
         Movie movie = movieRepository.findById(movieId).get();
         List<Show> showList = movie.getShowList();
 
-        List<Theater> theaterList = new ArrayList<>();
+        List<String> theaterList = new ArrayList<>();
         for (Show show : showList){
             Theater theater = show.getTheater();
-            theaterList.add(theater);
+            theaterList.add(theater.getName());
         }
         return theaterList;
     }
     public List<String> getUniqueLocation(){
         List<String> locationList = theaterRepository.getLocation();
         return locationList;
+    }
+
+    public List<String> getTheaterForTime(LocalTime time){
+        List<String> theatreName = new ArrayList<>();
+        List<Show> showList = showRepository.findByShowTime(time);
+
+        for (Show show : showList){
+            Theater theater = show.getTheater();
+            if (!theatreName.contains(theater.getName()))
+                theatreName.add(theater.getName());
+        }
+        return theatreName;
     }
 }

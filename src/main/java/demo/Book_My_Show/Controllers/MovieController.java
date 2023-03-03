@@ -28,9 +28,15 @@ public class MovieController {
     }
 
     @GetMapping("/getMovie")
-    public ResponseEntity<Movie> maximumNoShow(){
-        //return movie with maximum no of shows across all the theatre
-        Movie movie = movieService.maximumNoShow();
-        return new ResponseEntity<>(movie, HttpStatus.FOUND);
+    public ResponseEntity<String> maximumNoShow(){
+        //return movieName with maximum no of shows across all the theatre
+        String movieName = movieService.maximumNoShow();
+        return new ResponseEntity<>(movieName, HttpStatus.FOUND);
+    }
+
+    @GetMapping("/collection")
+    public ResponseEntity<Integer> totalCollection(@RequestParam int movieId){
+        Integer collection = movieService.totalCollection(movieId);
+        return new ResponseEntity<>(collection, HttpStatus.FOUND);
     }
 }

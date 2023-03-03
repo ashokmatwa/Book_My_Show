@@ -12,6 +12,7 @@ import demo.Book_My_Show.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -62,6 +63,8 @@ public class TicketService {
         ticket.setShow(show);
         ticket.setUser(user);
 
+        ticket = ticketRepository.save(ticket); // to stop from added two times
+
         //bidirectional
         show.getTicketList().add(ticket);
         user.getBookedTicketList().add(ticket);
@@ -78,6 +81,13 @@ public class TicketService {
         int showId = ticketEntryDto.getShowId();
         Show show = showRepository.findById(showId).get();
         List<ShowSeat> showSeatList = show.getShowSeatList();
+
+        //check if requested seat is actually exists or not
+//        for(String seat : requestedSeats){
+//            if(!showSeatList.contains(seat))
+//                return false;
+//            System.out.println(seat);
+//        }
 
         //iterating over list of SEATS for that particular SHOW
         for (ShowSeat showSeat : showSeatList){
@@ -99,5 +109,36 @@ public class TicketService {
             result = result + seat + ", ";
         }
         return result;
+    }
+
+    public List<Integer> getTicketByUser(int userId){
+        User user = userRepository.findById(userId).get();
+        List<Ticket> ticketList = user.getBookedTicketList();
+
+        List<Integer> ticketIdList = new ArrayList<>();
+        for (Ticket ticket :ticketList)
+            ticketIdList.add(ticket.getId());
+
+        return ticketIdList;
+    }
+
+    public String cancelTicket(int ticketId){
+        //ticketEntryDto -->  showId, requestedSeats, userId
+
+        //set
+        // seat as Not booked
+        // amount = 0
+
+        Ticket ticket = ticketRepository.findById(ticketId).get();
+        String seats[] = ticket.getBookedSeats().split(",");
+
+        Show show = ticket.getShow();
+        List<ShowSeat> showSeatList = show.getShowSeatList();
+        for(ShowSeat showSeat : showSeatList)
+            showSeat.setBooked(false);
+
+        ticket.setTotalAmount(0);
+        ticketRepository.save(ticket);
+        return "ticket cancelled";
     }
 }
